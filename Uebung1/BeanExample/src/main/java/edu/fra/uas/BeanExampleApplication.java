@@ -6,13 +6,19 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import controller.BeanController;
 import edu.fra.uas.service.MessageService;
 
-@SpringBootApplication
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@SpringBootApplication(scanBasePackages = {"edu.fra.uas", "controller"})
 public class BeanExampleApplication {
 
+	private static final Logger log = LoggerFactory.getLogger(BeanExampleApplication.class);
+
 	@Autowired
-	private MessageService messageService;
+	private BeanController beanController;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BeanExampleApplication.class, args);
@@ -24,14 +30,14 @@ public class BeanExampleApplication {
 
 			@Override
 			public void run(String... args) throws Exception {
-				System.out.println("Hello World!");
-				System.out.println(messageService.getMessage());
-				messageService.setMessage("--> HHHOHHH <--");
-				System.out.println(messageService.getMessage());
-
+				log.debug(beanController.putMessage("Hallo Welt"));
+				log.debug(beanController.putMessage("--> OOOHOOO <--"));
 			}
 		};
 		return action;
 	}
+
+	@Autowired
+	private MessageService messageService;
 
 }
